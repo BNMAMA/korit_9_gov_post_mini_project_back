@@ -2,6 +2,7 @@ package com.korit.post_mini_project_back.security;
 
 import com.korit.post_mini_project_back.entity.User;
 import com.korit.post_mini_project_back.jwt.JwtTokenProvider;
+import com.korit.post_mini_project_back.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,17 +16,17 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     private final JwtTokenProvider jwtTokenProvider;
+    private final UserService userService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         System.out.println(authentication);
+        User foundUser = userService.findUserByOauth2Id(authentication.getName());
 
-        // 데이터베이스에서 User 정보 호출
-        User foundUser = User.builder()
-                .userId(10)
-                .build();
+
         if (foundUser == null) {
             //회원가입
+            foundUser = userService.createUser(authentication);
         }
 
         String accessToken = jwtTokenProvider.createAccessToken(foundUser);
