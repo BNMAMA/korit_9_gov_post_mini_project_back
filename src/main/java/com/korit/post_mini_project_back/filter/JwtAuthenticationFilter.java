@@ -3,6 +3,7 @@ package com.korit.post_mini_project_back.filter;
 
 import com.korit.post_mini_project_back.entity.User;
 import com.korit.post_mini_project_back.jwt.JwtTokenProvider;
+import com.korit.post_mini_project_back.mapper.UserMapper;
 import com.korit.post_mini_project_back.security.PrincipalUser;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -27,7 +28,7 @@ import java.util.Map;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
-//    private final UserMapper userMapper;
+    private final UserMapper userMapper;
 
     @Override //동작을 무조건 하긴 함
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -45,7 +46,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         int userId = jwtTokenProvider.getUserId(accessToken);
-        User foundUser = null;
+        User foundUser = userMapper.findByUserId(userId);
 
         if (foundUser == null) {
             filterChain.doFilter(request, response);
