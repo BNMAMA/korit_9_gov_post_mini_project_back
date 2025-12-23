@@ -40,7 +40,7 @@ public class FileService {
             imageFiles.add(ImageFile.builder()
                     .category(category)
                     .originalFilename(originalFilename)
-                    .filePath(filePath.toString())
+                    .filePath(filePath.toString().substring(filePath.toString().indexOf("upload") +  "upload".length()).replaceAll("\\\\", "/"))
                     .extension(extention)
                     .size(file.getSize())
                     .build());
