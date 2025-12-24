@@ -4,7 +4,6 @@ import com.korit.post_mini_project_back.entity.Post;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import java.util.List;
 @SpringBootTest
 public class PostMapperTest {
